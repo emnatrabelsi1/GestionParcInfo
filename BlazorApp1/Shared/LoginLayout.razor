@@ -1,0 +1,24 @@
+﻿@inherits LayoutComponentBase
+
+<PageTitle>Login</PageTitle>
+
+<div class="main">
+    <div class="content px-4">
+        @Body
+    </div>
+</div>
+
+<style>
+    .main {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh; /* Full viewport height */
+    }
+
+    .content {
+        width: 100%;
+        max-width: 400px; /* Adjust as needed */
+    }
+</style>

@@ -1,0 +1,159 @@
+﻿@page "/protected"
+@attribute [Authorize]
+
+<h3>Protected Page</h3>
+
+<p>This page is only accessible to authenticated users.</p> 
+
+@page "/parcs"
+@using BlazorApp1.Services.IServices
+@using platapp.Domain
+@inject IParcService parcService
+@inject NavigationManager NavigationManager
+
+
+<h1>Liste des parcs</h1>
+
+@if (parcs == null)
+{
+    <p>Chargement en cours...</p>
+}
+else if (parcs.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Établissement</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var parc in parcs)
+            {
+                <tr>
+                    <td>@parc.Id</td>
+                    <td>@(parc.EtablissementFk != null ? GetEtablissementName(parc.EtablissementFk) : "Aucun")</td>
+
+                    <td>
+                        <select @bind="parc.EtablissementFk">
+                            <option value="">Sélectionner un établissement</option>
+                            @foreach (var etablissement in etablissements)
+                            {
+                                <option value="@etablissement.Id">@etablissement.Nom</option>
+                            }
+                        </select>
+                        <button @onclick="() => AffecterEtablissement(parc.Id, parc.EtablissementFk)">Affecter</button>
+                    </td>
+                    <td>
+                        <!-- Autres éléments de la ligne -->
+                        <button @onclick="() => VoirDetailsSalle(parc.Id)">Détails des salles</button>
+                    </td>
+                    <td>
+                        <!-- Autres éléments de la ligne -->
+                        <button @onclick="() => VoirDetailsUsers(parc.Id)">Détails des Utilisateurs </button>
+                    </td>
+                    <td>
+                        <!-- Bouton pour supprimer le parc -->
+                        <button @onclick="() => SupprimerParc(parc.Id)">Supprimer</button>
+                    </td>
+                </tr>
+           
+
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>Aucun parc trouvé.</p>
+}
+
+
+<h2>Ajouter un parc</h2>
+
+<form @onsubmit="AjouterParc">
+    
+
+    <button type="submit">Ajouter</button>
+</form>
+
+@code {
+    private List<platapp.Domain.Parc> parcs;
+    private List<platapp.Domain.Etablissement> etablissements = new List<Etablissement>(); // Liste des établissements initialisée
+    
+
+    protected override async Task OnInitializedAsync()
+    {
+        parcs = await parcService.GetParcs();
+        etablissements = await parcService.GetEtablissements();
+    }
+
+
+    private async Task AjouterParc()
+    {
+        // Créer un objet AddParcRequest avec les données du formulaire
+        var nouveauParc = new AddParcRequest {  };
+
+        // Appeler la méthode AddParc de votre service pour ajouter le parc
+        await parcService.AddParc(nouveauParc);
+
+        // Rafraîchir la liste des parcs après l'ajout
+        parcs = await parcService.GetParcs();
+
+        // Réinitialiser le champ de saisie du nom de l'établissement
+        
+    }
+    private async Task AffecterEtablissement(int parcId, int? etablissementId)
+    {
+        await parcService.AffectEtablissement(parcId, etablissementId);
+        parcs = await parcService.GetParcs();
+    }
+
+    private string GetEtablissementName(int? etablissementFk)
+    {
+        if (etablissementFk != null)
+        {
+            var etablissement = etablissements.FirstOrDefault(e => e.Id == etablissementFk);
+            if (etablissement != null)
+            {
+                return etablissement.Nom;
+            }
+        }
+        return "Aucun";
+    }
+
+    private void VoirDetailsSalle(int parcId)
+    {
+        // Redirection vers la page de détails des salles avec l'identifiant du parc
+        NavigationManager.NavigateTo($"/details-salle/{parcId}");
+    }
+
+
+
+    private void VoirDetailsUsers(int parcId)
+    {
+        // Redirection vers la page de détails des salles avec l'identifiant du parc
+        NavigationManager.NavigateTo($"/details-user/{parcId}");
+    }
+
+
+    private async Task SupprimerParc(int parcId)
+    {
+        try
+        {
+            // Appeler la méthode de l'API pour supprimer le parc avec l'identifiant donné
+            await parcService.RemoveParc(parcId);
+
+            // Mettre à jour la liste des parcs après la suppression
+            parcs = await parcService.GetParcs();
+        }
+        catch (Exception ex)
+        {
+            // Gérer les erreurs de manière appropriée
+            Console.WriteLine($"Erreur lors de la suppression du parc : {ex.Message}");
+            throw;
+        }
+    }
+
+}

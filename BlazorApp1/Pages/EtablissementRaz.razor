@@ -1,0 +1,137 @@
+﻿@* @page "/protected"
+@attribute [Authorize]
+
+<h3>Protected Page</h3>
+
+<p>This page is only accessible to authenticated users.</p> *@
+@page "/etablissements"
+@using BlazorApp1.Services.IServices
+@layout MainLayout
+@using platapp.Domain
+@inject IEtablissementService etabService
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JSRuntime
+
+
+
+
+
+<h3>Etablissement</h3>
+
+@if (etabs == null)
+{
+    <p>Chargement en cours...</p>
+}
+else if (etabs.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nom</th>
+                <th>Emplacement</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var etab in etabs)
+            {
+                <tr>
+                    <td>@etab.Id</td>
+                    <td>@etab.Nom</td>
+                    <td>@etab.Location</td>
+                   
+                    <td>
+                        <!-- Autres éléments de la ligne -->
+                        <button @onclick="() => VoirParcs(etab.Id)">Détails des parcs associés à cet établissement</button>
+                    </td>
+
+                   
+                    <td>
+                        <!-- Bouton pour supprimer le parc -->
+                        <button @onclick="() => SupprimerEtablissement(etab.Id)">Supprimer</button>
+                    </td>
+                </tr>
+
+
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>Aucun établissement trouvé.</p>
+}
+
+
+<h2>Ajouter un Etablissement</h2>
+
+<form @onsubmit="AjouterEtab">
+    <label>
+        Nom de l'établissement:
+        <input type="text" @bind="nouveauEtab.Nom" />
+    </label>
+    <label>
+        Emplacement:
+        <input type="text" @bind="nouveauEtab.Location" />
+    </label>
+
+    <button type="submit">Ajouter</button>
+
+</form>
+
+
+@code {
+    private List<Etablissement> etabs;
+    private AddEtablissementRequest nouveauEtab = new AddEtablissementRequest();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        etabs = await etabService.GetEtablissements();
+
+    }
+    private async Task AjouterEtab()
+    {
+        try
+        {
+            // Appeler la méthode du service pour ajouter le nouvel établissement avec les valeurs du formulaire
+            await etabService.AddEtablissement(nouveauEtab);
+
+            // Rafraîchir la liste des établissements après l'ajout
+            etabs = await etabService.GetEtablissements();
+
+            // Réinitialiser les champs de saisie
+            nouveauEtab.Nom = "";
+            nouveauEtab.Location = "";
+        }
+        catch (Exception ex)
+        {
+            // Gérer les erreurs de manière appropriée
+            Console.WriteLine($"Erreur lors de l'ajout de l'établissement : {ex.Message}");
+            throw;
+        }
+    }
+    private async Task SupprimerEtablissement(int id)
+    {
+        var confirmation = await JSRuntime.InvokeAsync<bool>("confirm", "Êtes-vous sûr de vouloir supprimer cet établissement ?");
+        if (confirmation)
+        {
+            try
+            {
+                await etabService.DeleteEtablissement(id);
+                // Rafraîchir la liste des établissements après la suppression
+                etabs = await etabService.GetEtablissements();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Erreur lors de la suppression de l'établissement : {ex.Message}");
+            }
+        }
+    }
+
+    private void VoirParcs(int etabId)
+    {
+        // Redirection vers la page de détails des salles avec l'identifiant du parc
+        NavigationManager.NavigateTo($"/parcs-etabs/{etabId}");
+    }
+}

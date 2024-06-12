@@ -1,0 +1,82 @@
+﻿@page "/modifier-utilisateur/{userId:int}"
+@using BlazorApp1.Services.IServices
+@using platapp.Domain
+@inject IUserService userService
+@inject NavigationManager NavigationManager
+
+<h1>Modifier Utilisateur</h1>
+
+@if (user == null)
+{
+    <p>Chargement en cours...</p>
+}
+else
+{
+    <form @onsubmit="ModifierUser">
+        <label>
+            Nom :
+            <input type="text" @bind="user.Nom" />
+        </label>
+        <label>
+            Prénom:
+            <input type="text" @bind="user.Prenom" />
+        </label>
+         <label>
+            Email:
+            <input type="text" @bind="user.Email" />
+        </label>
+        <label>
+            UserName:
+            <input type="text" @bind="user.username" />
+        </label>
+        <label>
+            Mot de passe:
+            <input type="text" @bind="user.Passwd" />
+        </label>
+        <label>
+            Type d'utilisateur:
+            <select @bind="selectedUserType">
+                <option value="false">Enseignant/Élève</option>
+                <option value="true">Administrateur</option>
+            </select>
+        </label>
+
+        <button type="submit">Enregistrer</button>
+    </form>
+}
+
+@code {
+    private AddUtilisateurRequest user;
+    [Parameter]
+    public int UserId { get; set; }
+    private string selectedUserType;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Récupérer l'utilisateur à modifier en fonction de son ID
+        user = await userService.GetUtilisateurById(UserId);
+    }
+
+    private async Task ModifierUser()
+    {
+        try
+        {
+
+            bool userType = selectedUserType == "Enseignant/Élève" ? false : true;
+
+            // Définir la valeur du type d'utilisateur dans nouveauUser
+            user.Type = userType;
+            // Appeler la méthode du service pour mettre à jour l'utilisateur
+            await userService.UpdateUtilisateur(UserId, user);
+
+            // Rediriger vers la liste des utilisateurs après la mise à jour
+            NavigationManager.NavigateTo("/users");
+        }
+        catch (Exception ex)
+        {
+            // Gérer les erreurs de manière appropriée
+            Console.WriteLine($"Erreur lors de la modification de l'utilisateur : {ex.Message}");
+            throw;
+        }
+    }
+}

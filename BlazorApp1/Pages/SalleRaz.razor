@@ -1,0 +1,109 @@
+﻿@page "/salles"
+@using BlazorApp1.Services.IServices
+@using platapp.Domain
+@inject ISalleService salleService
+@inject NavigationManager NavigationManager
+
+<h1>Liste des salles</h1>
+
+@if (salles == null)
+{
+    <p>Chargement en cours...</p>
+}
+else if (salles.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Type</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var salle in salles)
+            {
+                <tr>
+                    <td>@salle.Id</td>
+                    <td>@GetSalleType(salle.Type)</td>
+                    <td>
+                        <!-- Bouton pour supprimer la salle -->
+                        <button @onclick="() => Supprimersalle(salle.Id)">Supprimer</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>Aucune salle trouvée.</p>
+}
+
+<h2>Ajouter une salle</h2>
+
+<form @onsubmit="Ajoutersalle">
+    <label>
+        Type de salle:
+        <select @bind="selectedSalleType">
+            <option value="false">Salle d'examen</option>
+            <option value="true">Salle TP</option>
+        </select>
+    </label>
+    <button type="submit">Ajouter</button>
+</form>
+
+@code {
+    private List<Salle> salles;
+    private bool selectedSalleType;
+
+    protected override async Task OnInitializedAsync()
+    {
+        salles = await salleService.GetSalles();
+    }
+
+    private async Task Ajoutersalle()
+    {
+        // Créer un objet AddSalleRequest avec les données du formulaire
+        var nouveausalle = new AddSalleRequest { Type = selectedSalleType };
+
+        // Appeler la méthode AddSalle de votre service pour ajouter la salle
+        await salleService.AddSalle(nouveausalle);
+
+        // Rafraîchir la liste des salles après l'ajout
+        salles = await salleService.GetSalles();
+
+        // Réinitialiser le champ de saisie du nom de l'établissement
+        selectedSalleType = false;
+    }
+
+    private string GetSalleType(bool type)
+    {
+        return type ? "Salle TP" : "Salle Examen";
+    }
+
+    private async Task Supprimersalle(int salleId)
+    {
+        try
+        {
+            bool success = await salleService.RemoveSalle(salleId);
+
+            if (success)
+            {
+                // Mettre à jour la liste des salles après la suppression
+                salles = await salleService.GetSalles();
+            }
+            else
+            {
+                // Gérer le cas où la suppression a échoué
+                Console.WriteLine("La suppression de la salle a échoué.");
+            }
+        }
+        catch (Exception ex)
+        {
+            // Gérer les erreurs de manière appropriée
+            Console.WriteLine($"Erreur lors de la suppression de la salle : {ex.Message}");
+            throw;
+        }
+    }
+}

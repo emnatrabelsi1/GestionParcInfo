@@ -1,0 +1,111 @@
+is_global = true
+build_property.TargetFramework = net6.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = BlazorApp1
+build_property.RootNamespace = BlazorApp1
+build_property.ProjectDir = D:\Bureau\dotnet\platapp\BlazorApp1\
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 
+build_property.RazorLangVersion = 6.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = D:\Bureau\dotnet\platapp\BlazorApp1
+build_property._RazorSourceGeneratorDebug = 
+
+[D:/Bureau/dotnet/platapp/BlazorApp1/App.razor]
+build_metadata.AdditionalFiles.TargetPath = QXBwLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Bureau/dotnet/platapp/BlazorApp1/Pages/Acceuil.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWNjZXVpbC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Bureau/dotnet/platapp/BlazorApp1/Pages/Counter.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ291bnRlci5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Bureau/dotnet/platapp/BlazorApp1/Pages/DetailsSalle.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRGV0YWlsc1NhbGxlLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Bureau/dotnet/platapp/BlazorApp1/Pages/DetailsUser.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRGV0YWlsc1VzZXIucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Bureau/dotnet/platapp/BlazorApp1/Pages/EtablissementRaz.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXRhYmxpc3NlbWVudFJhei5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Bureau/dotnet/platapp/BlazorApp1/Pages/Index.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5kZXgucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Bureau/dotnet/platapp/BlazorApp1/Pages/Login.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTG9naW4ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Bureau/dotnet/platapp/BlazorApp1/Pages/LogRaz.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTG9nUmF6LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Bureau/dotnet/platapp/BlazorApp1/Pages/ModifierUtilisateur.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTW9kaWZpZXJVdGlsaXNhdGV1ci5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Bureau/dotnet/platapp/BlazorApp1/Pages/Parc.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUGFyYy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Bureau/dotnet/platapp/BlazorApp1/Pages/ParcsEtabs.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUGFyY3NFdGFicy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Bureau/dotnet/platapp/BlazorApp1/Pages/PosteRaz.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUG9zdGVSYXoucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Bureau/dotnet/platapp/BlazorApp1/Pages/SalleRaz.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2FsbGVSYXoucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Bureau/dotnet/platapp/BlazorApp1/Pages/UserRaz.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVXNlclJhei5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Bureau/dotnet/platapp/BlazorApp1/Shared/LoginLayout.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXExvZ2luTGF5b3V0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Bureau/dotnet/platapp/BlazorApp1/Shared/SurveyPrompt.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXFN1cnZleVByb21wdC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Bureau/dotnet/platapp/BlazorApp1/_Imports.razor]
+build_metadata.AdditionalFiles.TargetPath = X0ltcG9ydHMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Bureau/dotnet/platapp/BlazorApp1/Shared/MainLayout.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXE1haW5MYXlvdXQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-45rkf8v3vv
+
+[D:/Bureau/dotnet/platapp/BlazorApp1/Shared/NavMenu.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXE5hdk1lbnUucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-b5wscdn8ts
+
+[D:/Bureau/dotnet/platapp/BlazorApp1/Pages/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXJyb3IuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Bureau/dotnet/platapp/BlazorApp1/Pages/_Host.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX0hvc3QuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Bureau/dotnet/platapp/BlazorApp1/Pages/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX0xheW91dC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 

@@ -1,0 +1,10 @@
+D:\Bureau\dotnet\platapp\App1.Core\bin\Debug\netstandard2.0\App1.Core.deps.json
+D:\Bureau\dotnet\platapp\App1.Core\bin\Debug\netstandard2.0\App1.Core.dll
+D:\Bureau\dotnet\platapp\App1.Core\bin\Debug\netstandard2.0\App1.Core.pdb
+D:\Bureau\dotnet\platapp\App1.Core\obj\Debug\netstandard2.0\App1.Core.csproj.AssemblyReference.cache
+D:\Bureau\dotnet\platapp\App1.Core\obj\Debug\netstandard2.0\App1.Core.GeneratedMSBuildEditorConfig.editorconfig
+D:\Bureau\dotnet\platapp\App1.Core\obj\Debug\netstandard2.0\App1.Core.AssemblyInfoInputs.cache
+D:\Bureau\dotnet\platapp\App1.Core\obj\Debug\netstandard2.0\App1.Core.AssemblyInfo.cs
+D:\Bureau\dotnet\platapp\App1.Core\obj\Debug\netstandard2.0\App1.Core.csproj.CoreCompileInputs.cache
+D:\Bureau\dotnet\platapp\App1.Core\obj\Debug\netstandard2.0\App1.Core.dll
+D:\Bureau\dotnet\platapp\App1.Core\obj\Debug\netstandard2.0\App1.Core.pdb

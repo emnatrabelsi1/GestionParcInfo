@@ -1,0 +1,52 @@
+﻿@page "/login"
+@using System.ComponentModel.DataAnnotations
+@using BlazorApp1.Services
+
+@inject AuthService AuthService
+@inject NavigationManager Navigation
+@inject CustomAuthStateProvider AuthStateProvider
+
+
+<EditForm Model="loginModel" OnValidSubmit="HandleLogin">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div>
+        <label for="username">Username:</label>
+        <InputText id="username" @bind-Value="loginModel.Username" />
+    </div>
+
+    <div>
+        <label for="password">Password:</label>
+        <InputText id="password" type="password" @bind-Value="loginModel.Password" />
+    </div>
+
+    <button type="submit">Login</button>
+</EditForm>
+
+@code {
+    private LoginModel loginModel = new LoginModel();
+
+    private async Task HandleLogin()
+    {
+        var user = await AuthService.Login(loginModel.Username, loginModel.Password);
+        if (user != null)
+        {
+            AuthStateProvider.NotifyUserAuthentication(user.username);
+            Navigation.NavigateTo("/");
+        }
+        else
+        {
+            // Gérer l'erreur de login
+        }
+    }
+
+    public class LoginModel
+    {
+        [Required]
+        public string Username { get; set; }
+
+        [Required]
+        public string Password { get; set; }
+    }
+}

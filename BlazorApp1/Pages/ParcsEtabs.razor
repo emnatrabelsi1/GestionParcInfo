@@ -1,0 +1,105 @@
+﻿@* @using Microsoft.AspNetCore.Authorization
+@attribute [Authorize] *@
+
+@page "/parcs-etabs/{etabId:int}"
+@using BlazorApp1.Services.IServices
+@using platapp.Domain
+@inject IParcService parcService
+@inject IEtablissementService etabService
+
+@inject NavigationManager NavigationManager
+
+<h1>Liste des parcs</h1>
+
+@if (parcs == null)
+{
+    <p>Chargement en cours...</p>
+}
+else if (parcs.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var parc in parcs)
+            {
+                <tr>
+                    <td>@parc.Id</td>
+                    <td>
+                        <button @onclick="() => VoirDetailsSalle(parc.Id)">Détails des salles</button>
+                        <button @onclick="() => VoirDetailsUsers(parc.Id)">Détails des utilisateurs</button>
+                        <button @onclick="() => SupprimerParc(parc.Id)">Supprimer</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>Aucun parc trouvé.</p>
+}
+
+<h2>Ajouter un parc</h2>
+<form @onsubmit="AjouterParcEtab">
+    <button type="submit">Ajouter</button>
+</form>
+
+@code {
+    private List<platapp.Domain.Parc> parcs;
+    private List<Etablissement> etablissements = new List<Etablissement>();
+    [Parameter] public int etabId { get; set; }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        parcs = await etabService.GetParcsDeEtab(etabId);
+        etablissements = await parcService.GetEtablissements();
+    }
+
+    private void VoirDetailsSalle(int parcId)
+    {
+        NavigationManager.NavigateTo($"/details-salle/{parcId}");
+    }
+
+    private void VoirDetailsUsers(int parcId)
+    {
+        NavigationManager.NavigateTo($"/details-user/{parcId}");
+    }
+
+    private async Task SupprimerParc(int parcId)
+    {
+        try
+        {
+            await parcService.RemoveParc(parcId);
+            parcs = await parcService.GetParcs();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Erreur lors de la suppression du parc : {ex.Message}");
+            throw;
+        }
+    }
+
+    private async Task AjouterParcEtab()
+    {
+        try
+        {
+            var nouveauParc = new Parc
+            {
+                // Collect necessary information from the form if any
+            };
+
+            await parcService.AddParcEtab(etabId);
+            parcs = await etabService.GetParcsDeEtab(etabId);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Erreur lors de l'ajout du parc à l'établissement : {ex.Message}");
+            throw;
+        }
+    }
+}

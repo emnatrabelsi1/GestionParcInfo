@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiApplication.HomePage"
+             Title="HomePage">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="250"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Sidebar with Menu Hamburger -->
+        <Frame BackgroundColor="#3AADA1" CornerRadius="0" Padding="0">
+            <VerticalStackLayout>
+                <Button x:Name="HamburgerButton" Text="☰" FontSize="24" BackgroundColor="Transparent" TextColor="White" Padding="10" Clicked="HamburgerButton_Click"/>
+                <CollectionView x:Name="MenuList" BackgroundColor="Transparent" Margin="10"
+                                SelectionMode="Single" SelectionChanged="MenuList_SelectionChanged">
+                    <CollectionView.ItemsSource>
+                        <x:Array Type="{x:Type x:String}">
+                            <x:String>Voir la liste des établissements</x:String>
+                            <x:String>Voir la liste des parcs</x:String>
+                            <x:String>Voir la liste des utilisateurs</x:String>
+                            <x:String>Voir la liste des logs</x:String>
+                            <x:String>Voir la liste des salles</x:String>
+                            <x:String>Voir la liste des postes</x:String>
+                            <x:String>Déconnexion</x:String>
+                        </x:Array>
+                    </CollectionView.ItemsSource>
+                </CollectionView>
+            </VerticalStackLayout>
+        </Frame>
+
+        <!-- Main Content -->
+        <Frame Grid.Column="1" BackgroundColor="White" CornerRadius="0" Padding="0">
+            <Grid>
+                <Label x:Name="WelcomeText" Text="Welcome to the Home Page" VerticalOptions="Center" HorizontalOptions="Center" FontSize="24" TextColor="#3AADA1"/>
+                <CollectionView x:Name="EtablissementList" Margin="20" IsVisible="False">
+                    <!-- Liste des établissements -->
+                </CollectionView>
+            </Grid>
+        </Frame>
+    </Grid>
+</ContentPage>

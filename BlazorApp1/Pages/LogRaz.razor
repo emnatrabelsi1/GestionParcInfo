@@ -1,0 +1,57 @@
+﻿
+
+@page "/logs"
+@using BlazorApp1.Services.IServices
+@using platapp.Domain
+@inject ILogService LogService
+@inject NavigationManager NavigationManager
+
+
+<h1>Liste des Logs</h1>
+
+@if (Logs == null)
+{
+    <p>Chargement en cours...</p>
+}
+else if (Logs.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Intitulé de l'activité'</th>
+                <th>Date de l'activité</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var Log in Logs)
+            {
+                <tr>
+                    <td>@Log.Id</td>
+                    <td>@Log.LastActivity</td>
+
+                    <td>@Log.LastActivityDate</td>
+                </tr>
+
+
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>Aucun Log trouvé.</p>
+}
+
+@code {
+    private List<platapp.Domain.Log> Logs;
+   
+    
+
+    protected override async Task OnInitializedAsync()
+    {
+        Logs = await LogService.GetLogs();
+      
+    }
+}
+

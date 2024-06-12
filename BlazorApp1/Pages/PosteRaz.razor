@@ -1,0 +1,110 @@
+﻿@* @using Microsoft.AspNetCore.Authorization
+@attribute [Authorize] *@
+
+@page "/postes"
+@using BlazorApp1.Services.IServices
+@using platapp.Domain
+@inject IPosteService posteService
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JSRuntime
+
+<h3>Liste des postes</h3>
+
+@if (postes == null)
+{
+    <p>Chargement en cours...</p>
+}
+else if (postes.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Version</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var poste in postes)
+            {
+                <tr>
+                    <td>@poste.Id</td>
+                    <td>@poste.Version</td>
+                    <td>
+                        <button @onclick="() => SupprimerPoste(poste.Id)">Supprimer</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>Aucun poste trouvé.</p>
+}
+
+<h2>Ajouter un poste</h2>
+
+<form @onsubmit="AjouterPoste">
+    <div>
+        <label for="version">Version:</label>
+        <input type="text" id="version" @bind="nouveauPoste.Version" required />
+    </div>
+    <button type="submit">Ajouter</button>
+</form>
+
+@code {
+    private List<Poste> postes;
+    private AddPosteRequest nouveauPoste = new AddPosteRequest();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await ChargerPostes();
+    }
+
+    private async Task ChargerPostes()
+    {
+        try
+        {
+            postes = await posteService.GetPostes();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Erreur lors du chargement des postes : {ex.Message}");
+            // Afficher un message d'erreur à l'utilisateur
+        }
+    }
+
+    private async Task AjouterPoste()
+    {
+        try
+        {
+            await posteService.AddPoste(nouveauPoste);
+            await ChargerPostes();
+            nouveauPoste.Version = "";
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Erreur lors de l'ajout du poste : {ex.Message}");
+            // Afficher un message d'erreur à l'utilisateur
+        }
+    }
+
+    private async Task SupprimerPoste(int id)
+    {
+        var confirmation = await JSRuntime.InvokeAsync<bool>("confirm", "Êtes-vous sûr de vouloir supprimer ce poste ?");
+        if (confirmation)
+        {
+            try
+            {
+                await posteService.RemovePoste(id);
+                await ChargerPostes();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Erreur lors de la suppression du poste : {ex.Message}");
+                // Afficher un message d'erreur à l'utilisateur
+            }
+        }
+    }
+}

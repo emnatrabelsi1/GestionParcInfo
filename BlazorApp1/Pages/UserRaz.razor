@@ -1,0 +1,183 @@
+﻿@page "/users"
+@using BlazorApp1.Services.IServices
+@using platapp.Domain
+@inject IUserService userService
+@inject NavigationManager NavigationManager
+
+
+
+
+<h1>Liste des utilisateurs</h1>
+
+@if (users == null)
+{
+    <p>Chargement en cours...</p>
+}
+else if (users.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nom</th>
+                <th>Prenom</th>
+                <th>Type</th>
+                <th>UserName</th>
+                <th>Email</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in users)
+            {
+                <tr>
+                    <td>@user.Id</td>
+                    <td>@user.Nom</td>
+                    <td>@user.Prenom</td>
+                    <td>@GetUserType(user.Type)</td>
+                    <td>@user.username</td>
+                     <td>@user.Email</td>
+                    <td>
+
+                        <button @onclick="() => ModifierUtilisateur(user.Id)">Modifier</button>
+                        <button @onclick="() => SupprimerUtilisateur(user.Id)">Supprimer</button>
+                    </td>
+
+                   
+
+                   
+                </tr>
+
+
+            }
+        </tbody>
+    </table>
+
+}
+else
+{
+    <p>Aucun utilisateur trouvé.</p>
+}
+
+<h2>Ajouter un Etablissement</h2>
+
+<form @onsubmit="AjouterUser">
+    <label>
+        Nom :
+        <input type="text" @bind="nouveauUser.Nom" />
+    </label>
+    <label>
+        Prenom:
+        <input type="text" @bind="nouveauUser.Prenom" />
+    </label>
+    <label>
+        Email:
+        <input type="text" @bind="nouveauUser.Email" />
+    </label>
+    <label>
+        Username:
+        <input type="text" @bind="nouveauUser.username" />
+    </label>
+    <label>
+
+        <label>
+            <div class="password-container">
+                Mot de passe :
+                <input type="password" id="password-input" @bind="nouveauUser.Passwd" />
+                <button type="button" class="toggle-button" onclick="togglePassword()">
+                    <span id="eye-icon">👁️</span>
+                </button>
+            </div>
+        </label>
+        Type d'utilisateur:
+        <select @bind="selectedUserType">
+            <option value="false">Enseignant/Élève</option>
+            <option value="true">Administrateur</option>
+        </select>
+    </label>
+
+    <button type="submit">Ajouter</button>
+    </form>
+
+
+@code {
+
+    private List<Utilisateur> users;
+    private List<platapp.Domain.Etablissement> etablissements = new List<Etablissement>(); // Liste des établissements initialisée
+    private AddUtilisateurRequest nouveauUser = new AddUtilisateurRequest();
+    private string selectedUserType;
+
+
+        protected override async Task OnInitializedAsync()
+        {
+            users = await userService.GetUtilisateurs();
+            //  etablissements = await parcService.GetEtablissements();
+        }
+        private string GetUserType(bool type)
+        {
+            return type ? "Etudiant/Enseignant" : "Administrateur";
+        }
+        private async Task AjouterUser()
+        {
+       
+            try
+        {
+            bool userType = selectedUserType == "Enseignant/Élève" ? false : true;
+
+            // Définir la valeur du type d'utilisateur dans nouveauUser
+            nouveauUser.Type = userType;
+
+           
+                // Appeler la méthode du service pour ajouter le nouvel établissement avec les valeurs du formulaire
+                await userService.AddUtilisateur(nouveauUser);
+
+                // Rafraîchir la liste des établissements après l'ajout
+                users = await userService.GetUtilisateurs();
+
+                // Réinitialiser les champs de saisie
+                nouveauUser.Nom = "";
+                nouveauUser.Prenom = "";
+             //   nouveauUser.Type = false;
+            }
+            catch (Exception ex)
+            {
+                // Gérer les erreurs de manière appropriée
+                Console.WriteLine($"Erreur lors de l'ajout de l'établissement : {ex.Message}");
+                throw;
+            }
+        }
+
+
+    private async Task SupprimerUtilisateur(int userId)
+    {
+        try
+        {
+            bool success = await userService.RemoveUtilisateur(userId);
+
+            if (success)
+            {
+                // Mettre à jour la liste des utilisateurs après la suppression
+                users = await userService.GetUtilisateurs();
+            }
+            else
+            {
+                // Gérer le cas où la suppression a échoué
+                Console.WriteLine("La suppression de l'utilisateur a échoué.");
+            }
+        }
+        catch (Exception ex)
+        {
+            // Gérer les erreurs de manière appropriée
+            Console.WriteLine($"Erreur lors de la suppression de l'utilisateur : {ex.Message}");
+            throw;
+        }
+    }
+
+
+    private void ModifierUtilisateur(int userId)
+    {
+        // Redirection vers la page de modification de l'utilisateur avec l'identifiant de l'utilisateur
+        NavigationManager.NavigateTo($"/modifier-utilisateur/{userId}");
+    }
+
+}

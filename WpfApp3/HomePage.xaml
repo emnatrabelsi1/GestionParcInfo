@@ -1,0 +1,48 @@
+﻿<Window x:Class="WpfApp3.HomePage"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfApp3"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        Title="HomePage" Height="600" Width="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="250"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Sidebar with Menu Hamburger -->
+        <Border Background="#3AADA1" CornerRadius="10 0 0 10">
+            <StackPanel>
+                <Button x:Name="HamburgerButton" Content="☰" FontSize="24" Background="Transparent" Foreground="White" BorderThickness="0" Margin="10" Click="HamburgerButton_Click"/>
+                <ListBox x:Name="MenuList" Background="Transparent" BorderThickness="0" Foreground="White" Margin="10"
+                         SelectionChanged="MenuList_SelectionChanged">
+                    <ListBoxItem Content="Voir la liste des établissements" Tag="1" />
+                    <ListBoxItem Content="Voir la liste des parcs" Tag="2" />
+                    <ListBoxItem Content="Voir la liste des utilisateurs" Tag="3" />
+                    <ListBoxItem Content="Voir la liste des logs" Tag="4"/>
+                    <ListBoxItem Content="Voir la liste des salles" Tag="5"/>
+                    <ListBoxItem Content="Voir la liste des postes" Tag="6"/>
+                    <ListBoxItem Content="Déconnexion" Tag="7" />
+                </ListBox>
+            </StackPanel>
+        </Border>
+
+        <!-- Main Content -->
+        <Border Grid.Column="1" Background="White" CornerRadius="0 10 10 0">
+            <Grid>
+                <!-- Your main content here -->
+                <TextBlock x:Name="WelcomeText" Text="Welcome to the Home Page" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="24" Foreground="#3AADA1"/>
+
+                <ListBox x:Name="EtablissementList" Margin="20" Visibility="Collapsed">
+                    <!-- Liste des établissements -->
+                </ListBox>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

@@ -1,0 +1,63 @@
+﻿@* @page "/protected"
+@attribute [Authorize]
+
+<h3>Protected Page</h3>
+
+<p>This page is only accessible to authenticated users.</p> *@
+
+@page "/details-user/{parcId:int}"
+@using BlazorApp1.Services.IServices
+@using platapp.Domain
+@inject IParcService parcService
+
+<h1>Détails des utilisateurs affectés au parc avec l'ID: @parcId</h1>
+
+@if (users == null)
+{
+    <p>Pas d'utilisateurs affectés à ce parc'</p>
+}
+else if (users.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+
+                <th>Nom</th>
+                <th>Prénom</th>
+                <th>Type</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in users)
+            {
+                <tr>
+                    <td>@user.Nom</td>
+                    <td>@user.Prenom</td>
+                    <td>@GetUserType(user.Type)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>Aucune salle trouvée pour ce parc.</p>
+}
+
+@code {
+    private List<Utilisateur> users;
+    [Parameter]
+    public int parcId { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Récupérer les détails des salles pour le parc spécifié
+        users = await parcService.GetUsersByParc(parcId);
+    }
+    private string GetUserType(bool type)
+    {
+        return type ? "Etudiant/Enseignant" : "Administrateur";
+    }
+
+   
+}

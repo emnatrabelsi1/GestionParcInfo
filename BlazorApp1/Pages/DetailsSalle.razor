@@ -1,0 +1,58 @@
+﻿@* @page "/protected"
+@attribute [Authorize]
+
+<h3>Protected Page</h3>
+
+<p>This page is only accessible to authenticated users.</p> *@
+
+@page "/details-salle/{parcId:int}"
+@using BlazorApp1.Services.IServices
+@using platapp.Domain
+@inject IParcService parcService
+
+<h1>Détails de la salle pour le parc avec l'ID: @parcId</h1>
+
+@if (salles == null)
+{
+    <p>Chargement en cours...</p>
+}
+else if (salles.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+           
+                <th>Type</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var salle in salles)
+            {
+                <tr>
+                    <td>@GetSalleType(salle.Type)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>Aucune salle trouvée pour ce parc.</p>
+}
+
+@code {
+    private List<Salle> salles;
+    [Parameter]
+    public int parcId { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Récupérer les détails des salles pour le parc spécifié
+        salles = await parcService.GetSallesByParc(parcId);
+    }
+
+    private string GetSalleType(bool type)
+    {
+        return type ? "Salle TP" : "Salle Examen";
+    }
+}
